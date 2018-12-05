@@ -10,7 +10,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: ls
-  displayName: 'debug build issues'
-- script: dotnet build --configuration $(buildConfiguration)
+- script: dotnet build VoteApi/VoteApi.sln --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
+- script: dotnet test VoteApi/VoteApi.Test/VoteApi.Test.csproj --logger trx
+  displayName: dotnet test
+- task: PublishTestResults@2
+  inputs:
+    testRunner: VSTest
+    testResultsFiles: '**/*.trx'
