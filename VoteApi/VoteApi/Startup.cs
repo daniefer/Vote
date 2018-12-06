@@ -43,6 +43,9 @@ namespace VoteApi
 			{
 				app.UseDeveloperExceptionPage();
 			}
+			else
+				app.UseDeveloperExceptionPage();
+
 			app.UseSignalR(routes =>
 			{
 				routes.MapHub<VoteHub>("/voteHub");
