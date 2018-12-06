@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using VoteApi.Data;
 using VoteApi.Infrastructure;
 using VoteApi.Models;
@@ -18,15 +19,19 @@ namespace VoteApi.Controllers
 		private const string _ParticipantsByRoomRouteParameter = "{roomId}/" + Constants.ParticipantsRoute;
 
 		private readonly ApiContext _context;
+		private readonly ILogger<RoomController> _logger;
 
-		public RoomController(ApiContext context)
+		public RoomController(ApiContext context, ILogger<RoomController> logger)
 		{
 			_context = context;
+			_logger = logger;
+			_logger.LogDebug("RoomController created");
 		}
 
 		[HttpGet]
 		public async Task<ActionResult<List<Room>>> GetAsync(CancellationToken cancellationToken)
 		{
+			_logger.LogDebug("GetAsync called...");
 			return Ok(await _context.Rooms.AsNoTracking().ToListAsync(cancellationToken));
 		}
 
