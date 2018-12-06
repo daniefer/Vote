@@ -23,7 +23,7 @@ namespace VoteApi.Test
         {
             var room = new Room { Name = "Test Room" };
             var json = JsonConvert.SerializeObject(room);
-            var response = await _client.PostAsync("api/Rooms", new StringContent(json, Encoding.Default, "application/json"));
+            var response = await _client.PostAsync("api/Room", new StringContent(json, Encoding.Default, "application/json"));
             var body = await response.Content.ReadAsStringAsync();
             var newRoom = JsonConvert.DeserializeObject<Room>(body);
 
