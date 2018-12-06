@@ -18,6 +18,6 @@ steps:
   inputs:
     testRunner: VSTest
     testResultsFiles: '**/*.trx'
-- script: dotnet publish --output $(Build.ArtifactStagingDirectory)
+- script: dotnet publish VoteApi/VoteApi.sln --output $(Build.ArtifactStagingDirectory)
   displayName: publish artifacts
 - task: PublishBuildArtifacts@1
