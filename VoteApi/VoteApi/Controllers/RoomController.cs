@@ -32,7 +32,7 @@ namespace VoteApi.Controllers
 		public async Task<ActionResult<List<Room>>> GetAsync(CancellationToken cancellationToken)
 		{
 			_logger.LogDebug("GetAsync called...");
-			return Ok(await _context.Rooms.AsNoTracking().ToListAsync(cancellationToken));
+			return Ok(await _context.Rooms.Include(r => r.Participants).AsNoTracking().ToListAsync(cancellationToken));
 		}
 
 		[HttpPost]
