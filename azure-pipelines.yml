@@ -20,4 +20,8 @@ steps:
     testResultsFiles: '**/*.trx'
 - script: dotnet publish VoteApi/VoteApi/VoteApi.csproj --output $(Build.ArtifactStagingDirectory)
   displayName: publish artifacts
+- script: npm --prefix .\vote-ui\ install .\vote-ui\
+  displayName: 'installing ui packages'
+- script: npm --prefix .\vote-ui\ run vue-cli-service build --dest $(Build.ArtifactStagingDirectory)/wwwroot
+  displayName: 'publish ui to wwwroot'
 - task: PublishBuildArtifacts@1
