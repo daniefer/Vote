@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +29,7 @@ namespace VoteApi
 			services.AddCors(opts => opts.AddDefaultPolicy(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()));
 
 			services.AddDbContext<ApiContext>(opt => opt.UseInMemoryDatabase("VoteApi"));
-
+            services.AddCors();
 			//services.AddDbContext<ApiContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString(nameof(ApiContext))));
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddSignalR();
@@ -39,12 +40,11 @@ namespace VoteApi
 		{
 			Logger.LogDebug("Configuring ...");
 
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
-			else
-				app.UseDeveloperExceptionPage();
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+			app.UseDeveloperExceptionPage();
+
+            app.UseFileServer();
 
 			app.UseSignalR(routes =>
 			{
