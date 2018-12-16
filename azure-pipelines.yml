@@ -26,6 +26,6 @@ steps:
   displayName: 'installing ui packages'
 - script: mkdir $(Build.ArtifactStagingDirectory)/wwwroot
   displayName: 'create ui dist folder location'
-- script: cd ./vote-ui/ && npm run vue-cli-service build --dest $(Build.ArtifactStagingDirectory)/wwwroot
+- script: cd ./vote-ui/ && npm run build -- --dest $(Build.ArtifactStagingDirectory)/wwwroot
   displayName: 'publish ui to wwwroot'
 - task: PublishBuildArtifacts@1
