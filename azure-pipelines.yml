@@ -22,10 +22,10 @@ steps:
   displayName: publish artifacts
 - script: cd ./vote-ui/
   displayName: 'change working directory to vote-ui'
-- script: ls $(Build.ArtifactStagingDirectory)
-  displayName: 'debug artifacts folder'
 - script: npm install
   displayName: 'installing ui packages'
+- script: mkdir $(Build.ArtifactStagingDirectory)/wwwroot
+  displayName: 'create ui dist folder location'
 - script: npm run vue-cli-service build --dest $(Build.ArtifactStagingDirectory)/wwwroot
   displayName: 'publish ui to wwwroot'
 - task: PublishBuildArtifacts@1
