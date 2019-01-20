@@ -6,23 +6,23 @@ using VoteApi.Data;
 
 namespace VoteApi.Test
 {
-    public class InMemoryApplicationFactory<TStartup> : WebApplicationFactory<VoteApi.Startup>
-    {
-        protected override void ConfigureWebHost(IWebHostBuilder builder)
-        {
-            builder.ConfigureServices(services =>
-            {
+	public class InMemoryApplicationFactory<TStartup> : WebApplicationFactory<VoteApi.Startup>
+	{
+		protected override void ConfigureWebHost(IWebHostBuilder builder)
+		{
+			builder.ConfigureServices(services =>
+			{
 
-                var serviceProvider = new ServiceCollection()
-                    .AddEntityFrameworkInMemoryDatabase()
-                    .BuildServiceProvider();
+				var serviceProvider = new ServiceCollection()
+					.AddEntityFrameworkInMemoryDatabase()
+					.BuildServiceProvider();
 
-                services.AddDbContext<ApiContext>(opts =>
-                {
-                    opts.UseInMemoryDatabase("InMemoryDatabaseForTesting");
-                    opts.UseInternalServiceProvider(serviceProvider);
-                });
-            });
-        }
-    }
+				services.AddDbContext<ApiContext>(opts =>
+				{
+					opts.UseInMemoryDatabase("InMemoryDatabaseForTesting");
+					opts.UseInternalServiceProvider(serviceProvider);
+				});
+			});
+		}
+	}
 }

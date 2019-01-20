@@ -1,9 +1,15 @@
 ﻿namespace VoteApi.Hubs
 {
-    public enum ConnectionEvent
-    {
-        Left,
-        Joined,
-        HandToggled
-    }
+	public enum ParticipantEvent
+	{
+		Left,
+		Joined,
+		Changed,
+	}
+
+	public enum RoomEvent
+	{
+		Changed,
+		Deleted
+	}
 }
