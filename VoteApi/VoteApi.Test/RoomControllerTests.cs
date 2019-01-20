@@ -3,8 +3,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
-using VoteApi.Infrastructure;
-using VoteApi.Models;
 using Xunit;
 
 namespace VoteApi.Test
@@ -70,13 +68,31 @@ namespace VoteApi.Test
 			var roomName = "participant test room";
 			var savedRoom = await _client.CreateRoomAsync(roomName);
 
-			var response = await _client.GetAsync($"api/{Constants.RoomsRoute}/{savedRoom.Id}");
-			response.EnsureSuccessStatusCode();
-			var room = await response.Content.ReadAsAsync<Room>();
+			var room = await _client.GetRoomAsync(savedRoom.Id);
 
 			room.Should().NotBeNull();
 			room.Id.Should().Be(savedRoom.Id);
 			room.Name.Should().Be(roomName);
+		}
+
+
+		[Fact]
+		public async Task CanResetRoomMembersHandsAsync()
+		{
+			var roomName = "participant test room";
+			var savedRoom = await _client.CreateRoomAsync(roomName);
+			var participant1 = await _client.JoinParticipantToRoomAsync(savedRoom.Id, "Susan", true);
+			var participant2 = await _client.JoinParticipantToRoomAsync(savedRoom.Id, "Becky", true);
+			var participant3 = await _client.JoinParticipantToRoomAsync(savedRoom.Id, "Amanda", true);
+			var roomBeforeReset = await _client.GetRoomAsync(savedRoom.Id);
+
+			var room = await _client.ResetRoomAsync(savedRoom.Id);
+
+			var roomAfterReset = await _client.GetRoomAsync(savedRoom.Id);
+
+			roomBeforeReset.Participants.Where(x => x.IsRaised).Should().HaveCount(roomBeforeReset.Participants.Count);
+			room.Participants.Where(x => x.IsRaised).Should().HaveCount(0);
+			roomAfterReset.Participants.Where(x => x.IsRaised).Should().HaveCount(0);
 		}
 	}
 }

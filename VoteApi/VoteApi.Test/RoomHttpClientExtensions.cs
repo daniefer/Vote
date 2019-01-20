@@ -30,6 +30,13 @@ namespace VoteApi.Test
 			return await response.Content.ReadAsAsync<Room>();
 		}
 
+		public static async Task<Room> ResetRoomAsync(this HttpClient client, int roomId)
+		{
+			var response = await client.PostAsync($"api/{Constants.RoomsRoute}/{roomId}/{Constants.ParticipantsRoute}/_reset", null);
+			response.EnsureSuccessStatusCode();
+			return await response.Content.ReadAsAsync<Room>();
+		}
+
 
 		public static async Task<Room> UpdateRoomAsync(this HttpClient client, int roomId, Room room)
 		{

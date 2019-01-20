@@ -33,8 +33,8 @@ namespace VoteApi.Hubs
 
 		public static Task ParticipantChanged(this IHubContext<VoteHub> context, Participant participant, CancellationToken cancellationToken)
 		{
-			var eventArgs = new ParticipantEventArgs { Event = ParticipantEvent.Changed, ParticipantChanged = participant };
-			return context.Clients.Group(participant.RoomId.ToString()).SendAsync(nameof(IClient.RoomChanged), eventArgs, cancellationToken);
+			var eventArgs = new ParticipantEventArgs { Event = ParticipantEvent.Changed, Participant = participant };
+			return context.Clients.Group(participant.RoomId.ToString()).SendAsync(nameof(IClient.ParticipantChanged), eventArgs, cancellationToken);
 		}
 	}
 }

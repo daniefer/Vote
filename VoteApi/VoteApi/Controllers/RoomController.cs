@@ -20,6 +20,7 @@ namespace VoteApi.Controllers
 		private const string _ClassRoute = "api/" + Constants.RoomsRoute;
 		private const string _RoomRouteParameter = "{roomId}";
 		private const string _ParticipantsByRoomRouteParameter = _RoomRouteParameter + "/" + Constants.ParticipantsRoute;
+		private const string _ResetParticipantsByRoomRouteParameter = _ParticipantsByRoomRouteParameter + "/_reset";
 
 		private readonly ApiContext _context;
 		private readonly IHubContext<VoteHub> _voteHub;
@@ -77,6 +78,20 @@ namespace VoteApi.Controllers
 			await _context.SaveChangesAsync(cancellationToken);
 			await _voteHub.ParticipantJoined(participant, cancellationToken);
 			return participant;
+		}
+
+		[HttpPost(_ResetParticipantsByRoomRouteParameter)]
+		public async Task<ActionResult<Room>> PostResetParticipantsHandsAsync([FromRoute]int roomId, CancellationToken cancellationToken)
+		{
+			var room = await _context.Rooms.Include(x => x.Participants).FirstOrDefaultAsync(Room.GetById(roomId));
+
+			foreach (var participant in room.Participants)
+			{
+				participant.IsRaised = false;
+			}
+			await _context.SaveChangesAsync(cancellationToken);
+			await _voteHub.RoomChanged(room, cancellationToken);
+			return room;
 		}
 	}
 }
