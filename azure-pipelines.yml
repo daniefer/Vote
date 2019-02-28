@@ -20,8 +20,6 @@ steps:
     testResultsFiles: '**/*.trx'
 - script: dotnet publish VoteApi/VoteApi/VoteApi.csproj --output $(Build.ArtifactStagingDirectory)
   displayName: publish artifacts
-# - script: cd ./vote-ui/
-#   displayName: 'change working directory to vote-ui'
 - script: cd ./vote-ui/ && npm install
   displayName: 'installing ui packages'
 - script: mkdir $(Build.ArtifactStagingDirectory)/wwwroot
